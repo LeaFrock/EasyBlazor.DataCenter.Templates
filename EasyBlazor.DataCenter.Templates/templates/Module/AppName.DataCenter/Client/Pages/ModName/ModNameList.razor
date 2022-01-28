@@ -1,0 +1,95 @@
+﻿@page "/ModName/list"
+@using AppName.DataCenter.Shared;
+@using AppName.DataCenter.Shared.ViewModels
+@using AppName.DataCenter.Client.Helpers
+@using AppName.DataCenter.Client.Services;
+@inject BackendDataService DataService
+@inject MessageService MsgService
+@inject ModalService ModalService
+
+<div style="margin:20px">
+    <Breadcrumb Separator=">">
+        <BreadcrumbItem>
+            <Icon Type="home" />首页
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            <a href="home">
+                <Icon Type="appstore" />ModName管理
+            </a>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            ModName列表
+        </BreadcrumbItem>
+    </Breadcrumb>
+</div>
+<div style="margin:20px">
+    <Divider Orientation="center" Style="font-weight:bold">搜索栏</Divider>
+    <AntDesign.Row Style="padding:30px">
+        <AntDesign.Col Span="24">
+            <AntDesign.Form @ref=@_searchForm Model=@_formData OnFinish="OnFinish" LabelColSpan="6">
+                <AntDesign.Row>
+                    <AntDesign.GridCol Offset="1" Span="6">
+                        <FormItem>
+                            <LabelTemplate>
+                                <label for="id">
+                                    <Tooltip Title="@("数据库主键")">Id</Tooltip>
+                                </label>
+                            </LabelTemplate>
+                            <ChildContent>
+                                <AntDesign.InputNumber @bind-Value=@context.Id Min="1" Style="min-width:150px" />
+                            </ChildContent>
+                        </FormItem>
+                    </AntDesign.GridCol>
+                </AntDesign.Row>
+                @if (_showMoreConditions)
+                {
+                    <AntDesign.Row>
+                        <AntDesign.GridCol Offset="1" Span="6">
+                            <FormItem Label="创建时间">
+                                <AntDesign.RangePicker TValue="DateTime?[]" @bind-Value="context.CreateTimeRange" />
+                            </FormItem>
+                        </AntDesign.GridCol>
+                    </AntDesign.Row>
+                }
+                <AntDesign.Row>
+                    <AntDesign.Col Offset="16" Span="4">
+                        <FormItem>
+                            <Button Type="@ButtonType.Primary" Loading=@_searching Shape="round" Icon="search"
+                                HtmlType="submit" Style="margin-right:15px">
+                                查询
+                            </Button>
+                            <Button Type="@ButtonType.Default" Loading=@_searching OnClick="Reset">
+                                重置
+                            </Button>
+                            <Button Type="@ButtonType.Link" OnClick="Collapse">
+                                @if (_showMoreConditions)
+                                {
+                                    <Icon Type="up" /><span>收起</span>
+                                }
+                                else
+                                {
+                                    <Icon Type="down" /><span>展开</span>
+                                }
+                            </Button>
+                        </FormItem>
+                    </AntDesign.Col>
+                </AntDesign.Row>
+            </AntDesign.Form>
+        </AntDesign.Col>
+    </AntDesign.Row>
+    <Divider Orientation="center" Style="font-weight:bold">表格栏</Divider>
+    <AntDesign.Row>
+        <AntDesign.Col Span="24">
+            <AntDesign.Table TItem="ModNameListItem" DataSource="@_listItems" Loading=@_searching Bordered Total="_total"
+                PageIndex="@_formData.Index" PageSize="@_formData.Size" OnChange="OnTableChanged">
+                <AntDesign.Column TData="int" @bind-Field="@context.Id" Width="80px" Fixed="left">
+                    <a href=@($"ModName/{context.Id}")>@context.Id</a>
+                </AntDesign.Column>
+                <AntDesign.Column Title="名称" TData="string">
+                    <Text Copyable CopyConfig=@_copyableConfig>@context.Name</Text>
+                </AntDesign.Column>
+                <AntDesign.Column Title="创建时间" @bind-Field="@context.CreateTime" Format="yyyy-MM-dd HH:mm:ss" />
+            </AntDesign.Table>
+        </AntDesign.Col>
+    </AntDesign.Row>
+</div>

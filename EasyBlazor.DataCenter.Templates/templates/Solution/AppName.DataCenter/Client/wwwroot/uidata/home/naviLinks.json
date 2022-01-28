@@ -1,0 +1,47 @@
+[
+  {
+    "Title": "账号管理",
+    "Items": [
+      {
+        "Name": "会员查询",
+        "Route": "user/list",
+        "Disabled": false
+      },
+      {
+        "Name": "访客查询",
+        "Route": "visitor/list",
+        "Disabled": false
+      }
+    ]
+  },
+  {
+    "Title": "资源管理",
+    "Items": [
+      {
+        "Name": "图书查询",
+        "Route": "book/list",
+        "Disabled": false
+      }
+    ]
+  },
+  {
+    "Title": "统计管理",
+    "Items": [
+      {
+        "Name": "登录查询",
+        "Route": "analysis/login",
+        "Disabled": true
+      }
+    ]
+  },
+  {
+    "Title": "系统管理",
+    "Items": [
+      {
+        "Name": "管理员列表",
+        "Route": "system/admin/list",
+        "Disabled": false
+      }
+    ]
+  }
+]

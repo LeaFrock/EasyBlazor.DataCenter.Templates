@@ -1,0 +1,19 @@
+﻿@page "/"
+@layout LoginLayout
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager NavManager
+
+<div>正在检测当前用户是否登录...</div>
+
+@code {
+
+    [CascadingParameter] Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+        string dest = user.Identity.IsAuthenticated ? "home" : "login";
+        NavManager.NavigateTo(dest);
+    }
+}

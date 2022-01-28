@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "LeaFrock",
+  "classifications": [
+    "AntDesign",
+    "Blazor"
+  ],
+  "groupIdentity": "EasyBlazor.DataCenter.Module",
+  "identity": "EasyBlazor.DataCenter.ModuleTemplate",
+  "name": "EasyBlazor.DataCenter Template NewModule",
+  "shortName": "ebdc-mod",
+  "sourceName": "AppName",
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "modifiers": [
+        {
+          "exclude": [
+            ".template.config/**",
+            ".template.config/**/*",
+            "**/[Bb]in/**",
+            "**/[Oo]bj/**",
+            "**/tools/**",
+            "**/*.filelist",
+            "**/*.user",
+            "**/*.lock.json",
+            "**/.vs/**",
+            "**/packages/**",
+            "**/*.DS_Store",
+            "**/.DS_Store"
+          ]
+        }
+      ]
+    }
+  ],
+  "symbols": {
+    "mod": {
+      "type": "parameter",
+      "replaces": "ModName",
+      "dataType": "string",
+      "isRequired": true,
+      "fileRename": "ModName"
+    }
+  },
+  "tags": {
+    "language": "C#",
+    "type": "item"
+  }
+}

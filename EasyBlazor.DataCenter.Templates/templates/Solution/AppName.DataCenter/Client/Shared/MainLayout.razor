@@ -1,0 +1,147 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using AppName.DataCenter.Client.Services
+@using AppName.DataCenter.Client.Models
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+@inject IUserInterfaceDataService UIDataService
+
+<Layout Style="padding:0;margin:0">
+    <Header Style="height:10%">
+        <div style="margin:10px;">
+            <AntDesign.Row Justify="end" Align="middle">
+                <AntDesign.Col Span="6">
+                    <img src="./imgs/logo.png" style="align-self:center" />
+                </AntDesign.Col>
+                <AuthorizeView>
+                    <Authorized>
+                        <AntDesign.Col Span="8">
+                            <Menu Mode=MenuMode.Horizontal Theme="MenuTheme.Dark">
+                                <MenuItem Key="home">
+                                    <Icon Type="home"></Icon>
+                                    <MenuLink Href="./home">
+                                        首页
+                                    </MenuLink>
+                                </MenuItem>
+                                <SubMenu>
+                                    <TitleTemplate>
+                                        <Icon Type="menu"></Icon>
+                                        导航
+                                    </TitleTemplate>
+                                    <ChildContent>
+                                        @foreach(var menu in FastNaviMenuContents)
+                                        {
+                                            if (menu.Hide)
+                                            {
+                                                continue;
+                                            }
+                                            <MenuItemGroup Title=@menu.Title>
+                                                @foreach(var item in menu.Items)
+                                                {
+                                                    <MenuItem Key=@(menu.Title + ":" + @item.Name) Disabled=@item.Disabled >
+                                                        <MenuLink Href=@item.Route>
+                                                            @item.Name
+                                                        </MenuLink>
+                                                    </MenuItem>
+                                                }
+                                            </MenuItemGroup>
+                                            <MenuDivider />
+                                        }
+                                    </ChildContent>
+                                </SubMenu>
+                                <MenuItem Key="about">
+                                    <Icon Type="windows"></Icon>
+                                    <MenuLink Href="./about">
+                                        关于
+                                    </MenuLink>
+                                </MenuItem>
+                            </Menu>
+                        </AntDesign.Col>
+                        <AntDesign.Col Offset="4" Span="3">
+                            <Title Level="4" Style="color:white">@EnvironmentName</Title>
+                        </AntDesign.Col>
+                        <AntDesign.Col Span="3">
+                            <Space Size="@("middle")">
+                                <SpaceItem>
+                                    <Dropdown Placement="@Placement.BottomCenter">
+                                        <Overlay>
+                                            <Menu>
+                                                <MenuItem>
+                                                    <Button Type="@ButtonType.Link" Icon="user" OnClick="GoToAccount">个人中心</Button>
+                                                </MenuItem>
+                                                <MenuItem>
+                                                    <Button Type="@ButtonType.Link" Icon="logout" Danger OnClick="@LogoutAsync">退出登录</Button>
+                                                </MenuItem>
+                                            </Menu>
+                                        </Overlay>
+                                        <ChildContent>
+                                            <Avatar Shape="square" Size="64" Style="background-color:darkblue">@AccountName</Avatar>
+                                        </ChildContent>
+                                    </Dropdown>
+                                </SpaceItem>
+                            </Space>
+                        </AntDesign.Col>
+                    </Authorized>
+                </AuthorizeView>
+            </AntDesign.Row>
+        </div>
+    </Header>
+    <Content Style="background-color:white; min-height:500px">
+        <!--@Body--> @*测试*@
+        <AuthorizeView>
+            <Authorized>
+                @Body
+            </Authorized>
+            <NotAuthorized>
+                <div style="margin: 100px 0; width:100%; text-align: center; color: red;">
+                    <span style="font-size:20px">检测到登录超时，请重新<a href="./login" style="text-decoration:underline">登录</a>！</span>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+        <BackTop></BackTop>
+    </Content>
+</Layout>
+
+@code{
+    private string EnvironmentName { get; set; } = string.Empty;
+
+    private string AccountName { get; set; } = "?";
+
+    private HomePageContent[] FastNaviMenuContents { get; set; } = Array.Empty<HomePageContent>();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var info = await AuthService.GetAccountShortInfoAsync();
+        if(info is null)
+        {
+            AccountName = string.Empty;
+        }
+        else if (!string.IsNullOrEmpty(info.RealName))
+        {
+            AccountName = info.RealName;
+        }
+        else if (!string.IsNullOrEmpty(info.ModNameName))
+        {
+            AccountName = info.ModNameName;
+        }
+        else
+        {
+            AccountName = "?";
+        }
+        var uiBaseContent = await UIDataService.GetBaseContentAsync();
+        EnvironmentName = uiBaseContent.IsTest ? "测试服" : "正式服";
+        FastNaviMenuContents = await UIDataService.LoadHomePageContentsAsync();
+    }
+
+    private void GoToAccount()
+    {
+        NavigationManager.NavigateTo("./account");
+    }
+
+    private async Task LogoutAsync()
+    {
+        await AuthService.Logout();
+        NavigationManager.NavigateTo("./login");
+    }
+}

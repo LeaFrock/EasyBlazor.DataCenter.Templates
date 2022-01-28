@@ -1,0 +1,104 @@
+﻿@page "/ModName/{Id:int}"
+@using AppName.DataCenter.Client.Services;
+@using AppName.DataCenter.Shared;
+@inject BackendDataService DataService
+@inject NavigationManager NavigationManager
+@inject MessageService MsgService
+
+<div style="margin:20px">
+    <Breadcrumb Separator=">">
+        <BreadcrumbItem>
+            <Icon Type="home" />首页
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            <a href="home"><Icon Type="appstore" />ModName管理</a>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            <a href="ModName/list"><Icon Type="unordered-list" />ModName列表</a>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+            ModName详情
+        </BreadcrumbItem>
+    </Breadcrumb>
+</div>
+<div style="margin:20px">
+    @if (!_showEmptyContent)
+    {
+        <Divider Orientation="center" Style="font-weight:bold">基本信息</Divider>
+        <AntDesign.Row Style="padding:30px">
+            <AntDesign.Col Span="24">
+                <Descriptions Bordered>
+                    <DescriptionsItem Title="Id">@Id</DescriptionsItem>
+                    <DescriptionsItem Title="名称">
+                        <Text Copyable CopyConfig=@_copyableConfig>@_detailData.Name</Text>
+                    </DescriptionsItem>
+                    <DescriptionsItem Title="创建时间">@_detailData.CreateTime</DescriptionsItem>
+                </Descriptions>
+            </AntDesign.Col>
+        </AntDesign.Row>
+        <Divider Orientation="center" Style="font-weight:bold">一般操作</Divider>
+        <AntDesign.Row Style="padding:30px">
+            <AntDesign.Col Span="24">
+                <AntDesign.Form @ref="_form" Model=@_detailData ValidateMode="@FormValidateMode.Rules"
+                                Loading="@_interacting" OnFinish="UpdateModNameAsync" LabelColSpan="6">
+                    <AntDesign.Row>
+                        <AntDesign.Col Offset="1" Span="6">
+                            <FormItem Label="名称" Rules=@(new FormValidationRule[]{ new(){ Required = true, Type = FormFieldType.String, Min = 1, Max = 20 } })>
+                                <AntDesign.Input ReadOnly=@_readonly Placeholder="输入名称" @bind-Value=@context.Name />
+                            </FormItem>
+                        </AntDesign.Col>
+                    </AntDesign.Row>
+                    <AntDesign.Row Justify="end">
+                        <AntDesign.Col Span="4">
+                            <FormItem>
+                                @if (_readonly)
+                                {
+                                    <Button Type="@ButtonType.Primary" OnClick="() => { _readonly = false; }">修改</Button>
+                                }
+                                else
+                                {
+                                    <Button Type="@ButtonType.Default" Loading=@_interacting OnClick="RecoverModNameInfo" Style="margin-right:15px">
+                                        取消
+                                    </Button>
+                                    <Button Type="@ButtonType.Primary" Loading=@_interacting Shape="round" HtmlType="submit">
+                                        更新
+                                    </Button>
+                                }
+                            </FormItem>
+                        </AntDesign.Col>
+                    </AntDesign.Row>
+                </AntDesign.Form>
+            </AntDesign.Col>
+        </AntDesign.Row>
+        <Divider Orientation="center" Style="font-weight:bold">特殊操作</Divider>
+        <AntDesign.Row>
+            <AntDesign.Col Span="24">
+                <Collapse Bordered Accordion>
+                    <Panel Header="危险操作区域" Key="2">
+                        <Space Size="@("40")" Direction="DirectionVHType.Vertical" Style="margin: 20px 20px 0 20px">
+                            <Split>
+                                <Divider Type="DirectionVHType.Horizontal" />
+                            </Split>
+                            <ChildContent>
+                                <SpaceItem>
+                                    <Popconfirm Title="此操作不可恢复，确定吗？"
+                                                Placement="@Placement.Right"
+                                                OnConfirm="DeleteCurrentModNameAsync"
+                                                OkText="确认"
+                                                CancelText="取消">
+                                        <Button Danger Type="@ButtonType.Primary" Icon="delete" Loading="@_interacting">删除</Button>
+                                    </Popconfirm>
+                                </SpaceItem>
+                            </ChildContent>
+                        </Space>
+                    </Panel>
+                </Collapse>
+            </AntDesign.Col>
+        </AntDesign.Row>
+    }
+    else
+    {
+        <Divider />
+        <Skeleton Active></Skeleton>
+    }
+</div>

@@ -1,0 +1,38 @@
+﻿@inherits LayoutComponentBase
+@using AppName.DataCenter.Client.Services
+@inject IUserInterfaceDataService UIDataService
+
+<Layout Style="padding:0;margin:0">
+    <Header Style="height:10%">
+        <div style="margin:10px;">
+            <AntDesign.Row Justify="space-around" Align="middle">
+                <AntDesign.Col Span="8">
+                    <img src="./imgs/logo.png" style="align-self:center" />
+                </AntDesign.Col>
+                <AntDesign.Col Span="8" Offset="8" Style="text-align:center">
+                    <span style="color:white; font-size:24px">欢迎使用 @ProductionName 数据中心</span>
+                </AntDesign.Col>
+            </AntDesign.Row>
+        </div>
+    </Header>
+    <Content Style="background-color:white; min-height:500px">
+        <AntDesign.Row>
+            <AntDesign.Col Span="20" Offset="2">
+                <div style="margin:100px 0">
+                    @Body
+                </div>
+            </AntDesign.Col>
+        </AntDesign.Row>
+    </Content>
+</Layout>
+
+@code {
+    private string ProductionName = string.Empty;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var uiBaseContent = await UIDataService.GetBaseContentAsync();
+        ProductionName = $"{uiBaseContent.ProductionName ?? "???"}({(uiBaseContent.IsTest ? "测试服" : "正式服")})";
+        await base.OnInitializedAsync();
+    }
+}

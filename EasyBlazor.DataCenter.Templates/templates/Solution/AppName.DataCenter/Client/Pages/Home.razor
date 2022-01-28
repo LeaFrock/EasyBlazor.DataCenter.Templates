@@ -1,0 +1,31 @@
+﻿@page "/home"
+@using AppName.DataCenter.Client.Services
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IUserInterfaceDataService UIDataService
+
+<div style="margin:40px">
+    @foreach (var content in _contentList)
+    {
+        @if (!content.Hide)
+        {
+            <div style="margin:20px 0">
+                <Card Title=@content.Title Bordered="true">
+                    @foreach (var item in content.Items)
+                    {
+                        <CardGrid Style="width: 25%; text-align: center; padding: 0 5px; background-color: whitesmoke;" Hoverable="@(!item.Disabled)">
+                            @if (item.Disabled)
+                            {
+                                <span style="font-size:20px;color:dimgray">@item.Name</span>
+                            }
+                            else
+                            {
+                                <a href=@("./" + item.Route) style="font-size:20px">@item.Name</a>
+                            }
+                        </CardGrid>
+                    }
+                </Card>
+            </div>
+        }
+    }
+</div>

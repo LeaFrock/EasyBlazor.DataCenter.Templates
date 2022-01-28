@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <PackageType>Template</PackageType>
+	  <PackageVersion>1.0</PackageVersion>
+	  <PackageId>EasyBlazor.DataCenter.Templates</PackageId>
+	  <Title>EasyBlazor.DataCenter Templates</Title>
+	  <Authors>LeaFrock</Authors>
+	  <Description>Templates to use when creating an application for DataCenter based on Blazor.</Description>
+	  <PackageTags>templates;blazor;ant-design</PackageTags>
+	  <TargetFramework>.net6</TargetFramework>
+
+	  <IncludeContentInPack>true</IncludeContentInPack>
+	  <IncludeBuildOutput>false</IncludeBuildOutput>
+	  <ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+  <ItemGroup>
+	  <Content Include="templates\**\*" Exclude="templates\**\bin\**;templates\**\obj\**" />
+	  <Compile Remove="**\*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="templates\Solution\AppName.DataCenter\Client\Pages\" />
+  </ItemGroup>
+</Project>

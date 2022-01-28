@@ -1,0 +1,43 @@
+﻿@using AppName.DataCenter.Client.Models
+
+@inject MessageService MsgService
+@inherits FeedbackComponent<AudioInfo>
+
+<div style="padding:15px">
+    @if(Audio is null)
+    {
+        <Spin Tip="资源不存在" Size="large"/>
+    }
+    else
+    {
+        <AntDesign.Row>
+            <AntDesign.Col Offset="2" Span="20">
+                <AntDesign.Title Level="3">@Audio.FileName</AntDesign.Title>
+            </AntDesign.Col>
+        </AntDesign.Row>
+        <AntDesign.Row>
+            <AntDesign.Col Offset="1" Span="22" Style="text-align:center">
+                @switch (Audio.FileExtension)
+                {
+                    case "mp3":
+                        {
+                            <audio controls src=@Audio.Url style="width:100%">您的浏览器不支持该功能</audio>
+                        }
+                        break;
+
+                    case "mp4":
+                        {
+                            <video controls src=@Audio.Url width="640" height="480" style="text-align:center">您的浏览器不支持该功能</video>
+                        }
+                        break;
+
+                    default:
+                        {
+                            <Alert Message="暂不支持该资源格式" Type="@AlertType.Warning" ShowIcon="true" />
+                        }
+                        break;
+                }
+            </AntDesign.Col>
+        </AntDesign.Row>
+    }
+</div>
