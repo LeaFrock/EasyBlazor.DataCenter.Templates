@@ -2,12 +2,15 @@
 
   <PropertyGroup>
 	  <PackageType>Template</PackageType>
-	  <PackageVersion>1.0</PackageVersion>
+	  <PackageVersion>6.0.10</PackageVersion>
 	  <PackageId>EasyBlazor.DataCenter.Templates</PackageId>
 	  <Title>EasyBlazor.DataCenter Templates</Title>
 	  <Authors>LeaFrock</Authors>
 	  <Description>Templates to use when creating an application for DataCenter based on Blazor.</Description>
 	  <PackageTags>templates;blazor;ant-design</PackageTags>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <RepositoryType>git</RepositoryType>
+	  <RepositoryUrl>https://github.com/LeaFrock/EasyBlazor.DataCenter.Templates</RepositoryUrl>
 	  <TargetFramework>.net6</TargetFramework>
 
 	  <IncludeContentInPack>true</IncludeContentInPack>
