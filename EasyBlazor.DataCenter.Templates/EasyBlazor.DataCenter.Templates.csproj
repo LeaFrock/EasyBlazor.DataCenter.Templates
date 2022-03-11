@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <PackageType>Template</PackageType>
-	  <PackageVersion>6.0.10.1</PackageVersion>
+	  <PackageVersion>6.0.10.2</PackageVersion>
 	  <PackageId>EasyBlazor.DataCenter.Templates</PackageId>
 	  <Title>EasyBlazor.DataCenter Templates</Title>
 	  <Authors>LeaFrock</Authors>
