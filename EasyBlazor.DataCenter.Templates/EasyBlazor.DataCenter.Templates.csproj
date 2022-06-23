@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <PackageType>Template</PackageType>
-	  <PackageVersion>6.0.10.2</PackageVersion>
+	  <PackageVersion>6.0.11</PackageVersion>
 	  <PackageId>EasyBlazor.DataCenter.Templates</PackageId>
 	  <Title>EasyBlazor.DataCenter Templates</Title>
 	  <Authors>LeaFrock</Authors>
@@ -12,7 +12,7 @@
 	  <RepositoryType>git</RepositoryType>
 	  <RepositoryUrl>https://github.com/LeaFrock/EasyBlazor.DataCenter.Templates</RepositoryUrl>
 	  <TargetFramework>.net6</TargetFramework>
-	  <PackageReleaseNotes>Upgrade packages</PackageReleaseNotes>
+	  <PackageReleaseNotes>Upgrade AntDesign and fix some missing codes.</PackageReleaseNotes>
 	  <IncludeContentInPack>true</IncludeContentInPack>
 	  <IncludeBuildOutput>false</IncludeBuildOutput>
 	  <ContentTargetFolders>content</ContentTargetFolders>
