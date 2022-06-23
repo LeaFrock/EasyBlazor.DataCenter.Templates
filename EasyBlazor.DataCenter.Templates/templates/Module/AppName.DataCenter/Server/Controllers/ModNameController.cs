@@ -32,16 +32,16 @@ namespace AppName.DataCenter.Server.Controllers
         }
 
         [HttpGet(nameof(List))]
-        public async Task<PageListViewModel<ModNameListItem>> List(ModNamePageListRequest request)
+        public async Task<PageListViewModel<ModNameListItem>> List([FromQuery] ModNamePageListRequest request)
         {
             var query = EFContext.ModNames
-                .WhereIF(request.Id > 0,  p => p.Id == request.Id.Value)
+                .WhereIF(request.Id > 0, p => p.Id == request.Id.Value)
                 .WhereIF(Convert2LocalDateTime(request.CreateTimeMin, out var createTimeMin), e => e.CreateTime >= createTimeMin)
                 .WhereIF(Convert2LocalDateTime(request.CreateTimeMax, out var createTimeMax), e => e.CreateTime < createTimeMax);
             int total = await query.CountAsync();
-            if(total < 1)
+            if (total < 1)
             {
-                return new() { Items = Array.Empty<ModNameListItem>() }
+                return new() { Items = Array.Empty<ModNameListItem>() };
             }
             var items = await query
                 .OrderBy(p => p.Id)
@@ -60,12 +60,12 @@ namespace AppName.DataCenter.Server.Controllers
         [HttpGet("{id:int}")]
         public async Task<ModNameDetailViewModel> Retrieve(int id)
         {
-            if(id < 1)
+            if (id < 1)
             {
                 return new() { Id = -1 };
             }
             var detail = await EFContext.ModNames
-                .Where(p => p.Id = id)
+                .Where(p => p.Id == id)
                 .Select(p => new ModNameDetailViewModel()
                 {
                     Id = p.Id,
@@ -84,7 +84,7 @@ namespace AppName.DataCenter.Server.Controllers
                 return new() { Id = -1 };
             }
             var entity = await EFContext.ModNames.FindAsync(id);
-            if(entity is null)
+            if (entity is null)
             {
                 return new() { Id = -1 };
             }
