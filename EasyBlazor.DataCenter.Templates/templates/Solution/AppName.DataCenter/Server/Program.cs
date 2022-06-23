@@ -1,4 +1,5 @@
-﻿using NLog.Web;
+﻿using NLog;
+using NLog.Web;
 
 namespace AppName.DataCenter.Server
 {
@@ -6,7 +7,7 @@ namespace AppName.DataCenter.Server
     {
         public static void Main(string[] args)
         {
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             try
             {
                 logger.Debug("init main");
@@ -36,7 +37,7 @@ namespace AppName.DataCenter.Server
 #if RELEASE
                     logging.ClearProviders();
 #endif
-                    logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
                 .UseNLog();  // NLog: Setup NLog for Dependency injection;
     }
