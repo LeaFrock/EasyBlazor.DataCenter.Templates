@@ -1,24 +1,20 @@
 ﻿using System.Text;
-using LinqToDB.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Debug;
-using Microsoft.IdentityModel.Tokens;
 using AppName.DataCenter.Server.Data;
 using AppName.DataCenter.Server.Options;
 using AppName.DataCenter.Server.Profiles;
 using AppName.DataCenter.Server.Services;
 using AppName.DataCenter.Server.Services.Abstractions;
+using LinqToDB.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Debug;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     internal static class ServiceCollectionExtension
     {
         private const int DatabaseTimeoutSeconds = 10;
-
-#if DEBUG
-        private static readonly ILoggerFactory DebugLoggerFactory = new LoggerFactory(new[] { new DebugLoggerProvider() });
-#endif
 
         public static void AddAuthModule(this IServiceCollection services, IConfiguration configuration)
         {
@@ -46,7 +42,8 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<AppNameDbContext>(opt =>
             {
 #if DEBUG
-                opt.UseLoggerFactory(DebugLoggerFactory);
+                // See generated sql from EF Core in 'Output/Debug'
+                opt.UseLoggerFactory(new LoggerFactory(new[] { new DebugLoggerProvider() }));
 #endif
                 opt.UseSqlServer(connStr, builder =>
                 {
@@ -55,6 +52,18 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             LinqToDBForEFTools.Initialize();
+
+#if DEBUG
+            // See generated sql from linq2db in 'Output/Debug'
+            LinqToDB.Data.DataConnection.TurnTraceSwitchOn();
+            LinqToDB.Data.DataConnection.WriteTraceLine = (s1, s2, level) =>
+            {
+                if (level == System.Diagnostics.TraceLevel.Info && s2 == nameof(LinqToDB.Data.DataConnection))
+                {
+                    System.Diagnostics.Debug.WriteLine(s1);
+                }
+            };
+#endif
         }
 
         public static void AddAutoMapper(this IServiceCollection services)
