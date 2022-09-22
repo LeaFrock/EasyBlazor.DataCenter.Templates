@@ -1,16 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="nlogs\**" />
-    <Content Remove="nlogs\**" />
-    <EmbeddedResource Remove="nlogs\**" />
-    <None Remove="nlogs\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
@@ -29,10 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Client\AppName.DataCenter.Client.csproj" />
     <ProjectReference Include="..\Shared\AppName.DataCenter.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="DataProtectionKeys\" />
   </ItemGroup>
 
 
