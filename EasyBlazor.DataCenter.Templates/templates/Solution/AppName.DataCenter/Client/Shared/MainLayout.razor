@@ -35,16 +35,16 @@
                                             {
                                                 continue;
                                             }
-                                            <MenuItemGroup Title=@menu.Title>
-                                                @foreach(var item in menu.Items)
+                                            <SubMenu Title=@menu.Title>
+                                                @foreach (var item in menu.Items)
                                                 {
-                                                    <MenuItem Key=@(menu.Title + ":" + @item.Name) Disabled=@item.Disabled >
+                                                    <MenuItem Key=@(menu.Title + ":" + @item.Name) Disabled=@item.Disabled>
                                                         <MenuLink Href=@item.Route>
                                                             @item.Name
                                                         </MenuLink>
                                                     </MenuItem>
                                                 }
-                                            </MenuItemGroup>
+                                            </SubMenu>
                                             <MenuDivider />
                                         }
                                     </ChildContent>
